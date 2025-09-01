@@ -1,0 +1,972 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Puzzle 2</title>
+    <link href="https://fonts.googleapis.com/css2?family=Caprasimo&family=Montserrat:wght@600&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            margin: 0;
+            display: flex; 
+            flex-direction: column;
+            justify-content: flex-start; 
+            align-items: center; 
+            background-color: #0C1D22;
+            overflow-x: hidden; 
+        }
+
+        header {
+            background-color: rgba(225, 225, 225, 0.4);
+            width: calc(100% - 40px); 
+            max-width: 1560px; 
+            height: 70px;
+            border-radius: 12px;
+            margin: 20px;
+            display: flex; 
+            justify-content: space-between;
+            align-items: center; 
+            padding: 7px 50px; 
+            box-sizing: border-box; 
+            position: fixed; 
+            top: 0; 
+            z-index: 10; 
+        }
+
+        .logo {
+            font-size: 35px; 
+            font-family: 'Caprasimo', cursive; 
+            color: #FFFFFF;
+            letter-spacing: -0.04em; 
+            height: 40px; 
+            width: 102px; 
+            display: flex; 
+            align-items: center; 
+        }
+
+        .status-bar {
+            width: 480px;
+            height: 752px;
+            position: fixed;
+            top: 110px;
+            right: 180px; 
+            background-color: #0A3E49; 
+            border-radius: 12px;
+            padding: 24px;
+            opacity: 1;
+            display: flex; 
+            flex-direction: column; 
+            gap: 30px; 
+        }
+
+        .player-status-header, .inventory-header {
+            display: flex;
+            justify-content: space-between; 
+            align-items: center; 
+            margin-bottom: 10px; 
+        }
+
+        .player-status {
+            display: flex;
+            flex-direction: column;
+            gap: 20px; 
+        }
+
+        .player {
+            display: flex;
+            align-items: center; 
+            background-color: #04282F; 
+            border-radius: 8px;
+            padding: 10px; 
+        }
+
+        .player-icon {
+            width: 40px;
+            height: 40px;
+            margin-right: 10px; 
+            border-radius: 50%; 
+        }
+
+        .player-name {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 600;
+            font-size: 17px;
+            line-height: 100%;
+            letter-spacing: -3%;
+            color: #FFFFFF; 
+        }
+
+        .you-status {
+            background-color: #64A66F;
+            width: 37px;
+            height: 21px;
+            display: flex;
+            align-items: center;
+            justify-content: center; 
+            border-radius: 8px;
+            padding: 3px 8px; 
+            color: #FFFFFF; 
+            margin-left: 10px; 
+        }
+
+        .active-status {
+            background-color: #0A3E49;
+            width: 50px;
+            height: 21px;
+            display: flex;
+            align-items: center;
+            justify-content: center; 
+            border-radius: 8px;
+            padding: 3px 8px; 
+            color: #FFFFFF; 
+            margin-left: 10px; 
+        }
+
+        .show-all-button {
+            background-color: #0A3E49; 
+            color: #ffffff; 
+            border: 1px solid #78959B; 
+            border-radius: 8px; 
+            padding: 3px 6px; 
+            font-family: 'Montserrat', sans-serif;
+            font-size: 14px; 
+            cursor: pointer; 
+            margin-left: 10px; 
+            display: inline-block; 
+            line-height: 1;  
+            height: 27px;
+            border-color: #78959B;
+            opacity: 0.5;
+        }
+
+        .inventory {
+            display: flex;
+            justify-content: space-between; 
+            gap: 20px; 
+            width: 100%; 
+        }
+
+        .inventory-item {
+            position: relative; 
+            border: 2px solid transparent; 
+            border-radius: 20px; 
+            overflow: hidden; 
+            flex: 1; 
+            max-width: 132.67px; 
+        }
+
+        .inventory-image {
+            width: 100%; 
+            height: 95px; 
+            border-radius: 20px; 
+            transition: all 0.2s ease; 
+        }
+
+        .inventory-title {
+            position: absolute;
+            top: 50%; 
+            left: 50%; 
+            transform: translate(-50%, -50%); 
+            text-align: center;
+            color: white; 
+            background-color: rgba(0, 0, 0, 0.5); 
+            padding: 6px 0; 
+            border-radius: 8px; 
+            width: auto; 
+        }
+
+        .inventory-item:hover {
+            border-color: #78959B; 
+        }
+
+        .inventory-item:hover .inventory-image {
+            opacity: 0.8; 
+        }
+
+        .chat {
+            background-color: #FFFFFF33; 
+            border-radius: 12px; 
+            padding: 15px; 
+            height: 200px; 
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start; 
+        }
+
+        .chat-input-container {
+            display: flex; 
+            align-items: center; 
+            width: 100%; 
+            margin-top: auto; 
+        }
+
+        input[type="text"] {
+            flex: 1; 
+            padding: 10px; 
+            border-radius: 8px; 
+            border: 1px solid #78959B; 
+            height: 30px; 
+            margin-right: 10px; 
+            background-color: #FFFFFF73;
+        }
+
+        button.send-button {
+            background-color: #628C9B; 
+            color: #FFFFFF; 
+            border: none; 
+            border-radius: 8px; 
+            padding: 0 20px; 
+            height: 30px; 
+            cursor: pointer; 
+        }
+
+        .chat-messages {
+            flex: 1; 
+            overflow-y: auto; 
+            margin-bottom: 10px; 
+            max-height: 60px; 
+        }
+
+        .chat-message {
+            display: flex; 
+            align-items: center; 
+            color: #FFFFFF; 
+            margin: 5px 0; 
+        }
+
+        .sender-image {
+            width: 20px; 
+            height: 20px; 
+            border-radius: 50%; 
+            margin-right: 10px; 
+        }
+
+        .sender-name {
+            color: #88B7C7; 
+            margin-right: 5px; 
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 600;
+            font-size: 17px;
+            line-height: 140%; 
+            letter-spacing: -3%; 
+        }
+
+        .message-text {
+            font-family: 'Montserrat', sans-serif; 
+            font-weight: 600; 
+            font-size: 17px; 
+            line-height: 140%; 
+            letter-spacing: -3%; 
+            color: #FFFFFF; 
+        }
+
+        .main-container {
+            width: 768px;
+            height: 630px;
+            position: absolute;
+            top: 240px;
+            left: 270px;
+            background-image: url(frame4/main-door.png); 
+            background-size: cover;
+            background-position: center;
+            border-radius: 20px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+            display: flex;
+            flex-direction: column;
+            padding: 20px;
+            gap: 10px;
+            opacity: 1;
+        }
+
+        .title-content {
+            padding: 20px; 
+            margin-top: 80px; 
+            border-radius: 12px; 
+            margin-right: 925px;
+            color: #FFFFFF;
+            font-family: 'Caprasimo';
+        }
+
+        .lupa {
+            width: 0.443397521972656px;
+            height: 0.267601013183594px;
+            top: 302px;
+            opacity: 1;
+            border-radius: 60px;
+            padding: 30px;
+            background-image: url(frame3/lupa.png);
+            margin-left: 500px;
+            margin-top: 330px;
+        }
+
+        .code {
+            display: none; 
+            width: 768px;
+            height: 630px;
+            position: absolute;
+            top: 240px;
+            left: 270px;
+            background-image: url(frame4/code.png);
+            background-size: cover;
+            background-position: center;
+            border-radius: 20px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+            display: none;
+            flex-direction: column;
+            padding: 20px;
+            gap: 10px;
+            opacity: 1;
+        }
+
+        .letter {
+            position: absolute;
+            background-color: #005465;
+            color: #27BDE7;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            font-family: 'Caprasimo', cursive;
+            border-radius: 10px;
+            text-transform: uppercase;
+        }
+
+        .display-area {
+            position: absolute;
+            width: 133px;
+            height: 34px;
+            top: 190px;
+            left: 355px;
+            background: #005465;
+            color: #27BDE7;
+            font-family: 'Caprasimo', cursive;
+            font-size: 30px;
+            line-height: 100%;
+            letter-spacing: -1%;
+            text-align: center;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 10px;
+            box-shadow: 0 0 1px #27BDE7;
+        }    
+
+        .locker {
+            width: 768px;
+            height: 630px;
+            position: absolute;
+            top: 240px;
+            left: 270px;
+            background-image: url(frame4/locker.png); 
+            background-size: cover;
+            background-position: center;
+            border-radius: 20px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2); 
+            display: flex;
+            flex-direction: column;
+            padding: 20px;
+            gap: 10px;
+            opacity: 1;
+            display: none;
+        }
+
+        .notes {
+            width: 768px;
+            height: 630px;
+            position: absolute;
+            top: 240px;
+            left: 270px;
+            background-image: url('frame4/notes.png');
+            background-size: cover;
+            background-position: center;
+            border-radius: 20px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+            display: none; 
+            flex-direction: column;
+            padding: 20px;
+            gap: 10px;
+            opacity: 1;
+        }
+
+        .status-bar {
+            width: 480px;
+            height: 752px;
+            position: fixed;
+            top: 110px;
+            right: 180px;
+            background-color: #0A3E49;
+            border-radius: 12px;
+        }
+
+        .puzzle-2 {
+            width: 768px;
+            height: 630px;
+            position: absolute;
+            top: 240px;
+            left: 270px;
+            background-color: #0A3E49;
+            border-radius: 20px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+            display: flex;
+            flex-direction: column;
+            padding: 20px;
+            gap: 20px;
+            opacity: 1;
+        }
+
+        .titles {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+            padding: 0 80px;
+        }
+
+        .category {
+            font-family: 'Caprasimo', cursive;
+            font-size: 18px;
+            color: #FFFFFF;
+            background-color: #005465;
+            padding: 5px 10px;
+            border-radius: 10px;
+        }
+
+        .drag-area {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .gossip-column {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .true-column {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .drag-box {
+            background-color: rgba(0, 0, 0, 0.2);
+            border: 2px dashed #FFFFFF1F;
+            border-radius: 10px;
+            text-align: center;
+            color: #FFFFFF;
+            font-family: 'Caprasimo', cursive;
+            padding: 30px;
+            height: 60px;
+        }
+
+        .buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: auto;
+        }
+
+        button {
+            background-color: #628C9B;
+            color: #FFFFFF;
+            border: none;
+            border-radius: 16px;
+            padding: 12px 20px;
+            font-family: 'Caprasimo', cursive;
+            cursor: pointer;
+            opacity: 0.7;
+        }
+
+        .inventory-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(131px, 1fr));
+    gap: 10px;
+    padding: 10px;
+}
+
+.inventory-item {
+    width: 131px;
+    height: 131px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.inventory-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 8px;
+}
+.drag-box {
+    background-color: rgba(0, 0, 0, 0.2);
+    border: 2px dashed #FFFFFF1F;
+    border-radius: 10px;
+    text-align: center;
+    color: #FFFFFF;
+    font-family: 'Caprasimo', cursive;
+    padding: 30px;
+    height: 60px;
+    transition: background-color 0.2s ease;
+}
+
+.drag-box.dragover {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+    .narrator {
+            width: 768px;
+            height: 630px;
+            position: absolute;
+            top: 240px;
+            left: 270px;
+            background-image: url('frame4/narrator.png');
+            background-size: cover;
+            background-position: center;
+            border-radius: 20px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+            display: none; 
+            flex-direction: column;
+            padding: 20px;
+            gap: 10px;
+            opacity: 1;
+        }
+
+
+        
+
+    </style>
+
+</head>
+
+<body>
+    <header>
+        <div class="logo">verity</div>
+        <nav>
+            <ul>
+                <button id="nextButton" style="background-color: #628C9B; opacity: 0.7; color: #ffffff; border: none; border-radius: 16px; padding: 12px 20px; font-family: 'Caprasimo', cursive; cursor: pointer; margin-left: 20px;">Cancel</button>
+            </ul>
+        </nav>
+    </header>
+
+    <div class="status-bar">
+        <div class="player-status-header">
+            <h2 style="color: #FFFFFF; font-family: 'Caprasimo', cursive; font-size: 24px; margin: 0;">Player Status</h2>
+            <button class="show-all-button">Show All →</button>
+        </div>
+
+        <div class="player-status">
+            <div class="player">
+                <img src="frame3/kid.png" alt="Invisible Kid" class="player-icon">
+                <div class="player-name">Invisible Kid</div>
+                <div class="you-status">You</div>
+            </div>
+            <div class="player">
+                <img src="frame3/kid.png" alt="Gossip Queen" class="player-icon">
+                <div class="player-name">Gossip Queen</div>
+                <div class="active-status">Active</div>
+            </div>
+            <div class="player">
+                <img src="frame3/kid.png" alt="Gossip Queen" class="player-icon">
+                <div class="player-name">Gossip Queen</div>
+                <div class="active-status">Active</div>
+            </div>
+        </div>
+
+        <div class="inventory-header">
+            <h2 style="color: #FFFFFF; font-family: 'Caprasimo', cursive; font-size: 24px; margin: 0;">Inventory</h2>
+            <button class="show-all-button">Show All →</button>
+        </div>
+
+        <div class="inventory">
+            <div class="inventory-item" id="invent1" draggable="true">
+                <img src="frame3/back1.png" alt="Notebook" class="inventory-image">
+                <div class="inventory-title">Notebook</div>
+            </div>
+            <div class="inventory-item" id="invent2" draggable="true">
+                <img src="frame3/back2.png" alt="Letter" class="inventory-image">
+                <div class="inventory-title">Letter</div>
+            </div>
+            <div class="inventory-item" id="invent3" draggable="true">
+                <img src="frame3/back3.png" alt="Key" class="inventory-image">
+                <div class="inventory-title">Key</div>
+            </div>
+        </div>
+
+        <h2 style="color: #FFFFFF; font-family: 'Caprasimo', cursive; font-size: 24px; margin: 0;">Chat</h2>
+
+        <div class="chat">
+            <div class="chat-messages" id="chatMessages">
+            </div>
+            <div class="chat-input-container">
+                <input type="text" id="chatInput" placeholder="Message">
+                <button class="send-button" id="sendButton">Send</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="title-content" id="titleContent">
+        <p style="font-size: 28px;"> Rumor High School</p>
+        <p style="font-size: 18px; font-family: 'Montserrat', sans-serif;">Puzzle 2: The Locker of Anonymous Letters </p>
+    </div>
+
+    <div class="main-container" id="mainContainer">
+        <div class="lupa"></div>  
+    </div>
+
+    <div class="code">
+        <div class="display-area" id="displayArea"></div>
+        <div class="letter" style="width: 44.96px; height: 44.49px; top: 271px; left: 344.44px; border-top-left-radius: 9px; border-top-right-radius: 15px;">T</div>
+        <div class="letter" style="width: 39.80px; height: 44.49px; top: 271px; left: 400.63px; border-top-left-radius: 12px; border-top-right-radius: 12px;">O</div>
+        <div class="letter" style="width: 42.15px; height: 44.49px; top: 271px; left: 452.15px; border-top-left-radius: 13px; border-top-right-radius: 11px;">R</div>
+        <div class="letter" style="width: 44.56px; height: 42.15px; top: 320.17px; left: 344.44px;">H</div>
+        <div class="letter" style="width: 39.44px; height: 42.15px; top: 320.17px; left: 401px;">N</div>
+        <div class="letter" style="width: 42.15px; height: 42.15px; top: 320.17px; left: 452.15px;">D</div>
+        <div class="letter" style="width: 44.56px; height: 47px; top: 367px; left: 344.44px;">S</div>
+        <div class="letter" style="width: 44.56px; height: 47px; top: 367px; left: 401px;">U</div>
+        <div class="letter" style="width: 42.15px; height: 47px; top: 367px; left: 452.15px;">E</div>
+        <div class="letter" style="width: 39.44px; height: 45px; top: 418px; left: 401px;">P</div>
+
+        <div class="buttons buttons-1">
+            <button class="undo-button" id="undoAll">Undo All</button>
+            <button class="check-button" id="checkButton1">Check →</button>
+        </div>
+    </div>
+
+    <div class="locker">
+        <div class="lupa" style="margin-left:420px; margin-top:230px"></div>  
+    </div>
+
+    <div class="notes" style="display: none;">
+    </div>
+
+    <div class="puzzle-2" style="display: none;">
+        <p style="font-family: Montserrat; font-weight: 400; font-size: 18px; line-height: 100%; letter-spacing: -4%; text-align: center; color: #FFFFFF;">
+            Drag letters from the inventory into the right boxes.
+        </p>
+
+        <div class="titles">
+            <div class="category" id="gossipCategory">Gossip/Rumors</div>
+            <div class="category" id="trueInformationCategory">True Information</div>
+        </div>
+
+        <div class="drag-area">
+            <div class="gossip-column">
+                <div class="drag-box" id="gossip1">Drag here</div>
+                <div class="drag-box" id="gossip2">Drag here</div>
+                <div class="drag-box" id="gossip3">Drag here</div>
+            </div>
+            <div class="true-column">
+                <div class="drag-box" id="true1">Drag here</div>
+                <div class="drag-box" id="evidence1">Evidence</div>
+                <div class="drag-box" id="true2">Drag here</div>
+                <div class="drag-box" id="evidence2">Evidence</div>
+            </div>
+        </div>
+
+        <div class="buttons buttons-1">
+            <button class="undo-button" id="undoAll">Undo All</button>
+            <button class="check-button" id="checkButton">Check →</button>
+        </div>
+    </div>
+
+    <div class="narrator"></div>
+    
+    
+
+    <script>
+// Chat functionality
+const chatInput = document.getElementById('chatInput');
+const sendButton = document.getElementById('sendButton');
+const chatMessages = document.getElementById('chatMessages');
+
+function sendMessage() {
+    const messageText = chatInput.value.trim();
+    if (messageText) {
+        const messageElement = document.createElement('div');
+        messageElement.className = 'chat-message';
+
+        const senderImage = document.createElement('img');
+        senderImage.src = 'frame3/back1.png';
+        senderImage.className = 'sender-image';
+
+        const senderName = document.createElement('span');
+        senderName.className = 'sender-name';
+        senderName.textContent = "Gossip Queen";
+
+        const messageBody = document.createElement('span');
+        messageBody.className = 'message-text';
+        messageBody.textContent = messageText;
+
+        messageElement.appendChild(senderImage);
+        messageElement.appendChild(senderName);
+        messageElement.appendChild(messageBody);
+
+        chatMessages.appendChild(messageElement);
+        chatInput.value = '';
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+    }
+}
+
+sendButton.addEventListener('click', sendMessage);
+chatInput.addEventListener('keypress', function(event) {
+    if (event.key === 'Enter') {
+        sendMessage();
+    }
+});
+
+// Code logic and display area 
+const mainContainer = document.getElementById('mainContainer');
+const codeDiv = document.querySelector('.code');
+const lupa = document.querySelector('.lupa');
+
+lupa.addEventListener('click', function() {
+    mainContainer.style.display = 'none';
+    codeDiv.style.display = 'flex';
+});
+
+let enteredLetters = '';
+const displayArea = document.getElementById('displayArea');
+
+document.querySelectorAll('.letter').forEach(letterButton => {
+    letterButton.addEventListener('click', function() {
+        if (enteredLetters.length < 5) {
+            enteredLetters += this.textContent;
+            displayArea.textContent = enteredLetters;
+        }
+    });
+});
+
+document.getElementById('undoAll').addEventListener('click', function() {
+    enteredLetters = '';
+    displayArea.textContent = '';
+});
+
+document.getElementById('checkButton1').addEventListener('click', function() {
+    if (displayArea.textContent === "TRUTH") {
+        document.querySelector('.code').style.display = 'none';
+        document.querySelector('.locker').style.display = 'block';
+    } else {
+        document.getElementById('resultOverlay').style.display = 'flex';
+    }
+});
+
+// Puzzle and drag-and-drop logic
+const overlay = document.createElement('div');
+overlay.id = 'resultOverlay';
+overlay.style.position = 'fixed';
+overlay.style.top = '0';
+overlay.style.left = '0';
+overlay.style.width = '100%';
+overlay.style.height = '100%';
+overlay.style.backgroundColor = 'rgba(0, 0, 0, 0.8)';
+overlay.style.display = 'none';
+overlay.style.zIndex = '1000';
+overlay.style.alignItems = 'center';
+overlay.style.justifyContent = 'center';
+
+const resultImage = document.createElement('img');
+resultImage.src = 'frame3/result.png';
+resultImage.style.maxWidth = '80%';
+resultImage.style.borderRadius = '12px';
+overlay.appendChild(resultImage);
+document.body.appendChild(overlay);
+
+overlay.addEventListener('click', function() {
+    overlay.style.display = 'none';
+});
+
+const lockerLupa = document.querySelector('.locker .lupa');
+const notesDiv = document.querySelector('.notes');
+
+lockerLupa.addEventListener('click', function() {
+    document.querySelector('.locker').style.display = 'none';
+    notesDiv.style.display = 'flex';
+});
+
+const puzzle2Div = document.querySelector('.puzzle-2');
+const titleContent = document.getElementById('titleContent');
+const statusBar = document.querySelector('.status-bar');
+
+notesDiv.addEventListener('click', function() {
+    notesDiv.style.display = 'none';
+    puzzle2Div.style.display = 'flex';
+
+    titleContent.innerHTML = `
+        <p style="margin-left:255px; font-size: 28px;">Puzzle 2: The Locker of Anonymous Letters</p>
+        <p style="margin-left:255px; font-size: 17px; font-family: 'Montserrat', sans-serif;">
+            Sort the letters into 2 piles: gossip and correct information. Cross-check with the evidence.
+        </p>
+    `;
+
+statusBar.innerHTML = `
+    <div class="inventory-header">
+        <h2 style="color: #FFFFFF; font-family: 'Caprasimo', cursive; font-size: 24px; margin: 0;">Inventory</h2>
+    </div>
+    <div class="inventory-grid">
+        <div class="inventory-item" draggable="true" data-text="Coach Cheated">
+            <img src="frame4/coach.png" alt="Coach" class="inventory-image">
+        </div>
+        <div class="inventory-item" draggable="true" data-text="Ask the Library">
+            <img src="frame4/ask.png" alt="Ask" class="inventory-image">
+        </div>
+        <div class="inventory-item" draggable="true" data-text="Principal Fired">
+            <img src="frame4/principal.png" alt="Principal" class="inventory-image">
+        </div>
+        <div class="inventory-item" draggable="true" data-text="Teacher Duty Roster">
+            <img src="frame4/teacher.png" alt="Teacher" class="inventory-image">
+        </div>
+        <div class="inventory-item" draggable="true" data-text="Prom is Cancelled">
+            <img src="frame4/prom.png" alt="Prom" class="inventory-image">
+        </div>
+        <div class="inventory-item" draggable="true" data-text="Desk Inspection">
+            <img src="frame4/desk.png" alt="Desk" class="inventory-image">
+        </div>
+        <div class="inventory-item" draggable="true" data-text="Saw Ms. Lee">
+            <img src="frame4/lee.png" alt="Lee" class="inventory-image">
+        </div>
+        <div class="inventory-item" draggable="true" data-text="Cafeteria Expired Meat">
+            <img src="frame4/cafe.png" alt="Cafe" class="inventory-image">
+        </div>
+    </div>
+`;
+
+});
+let dropOrder = 0;
+const orderedWords = ["Coach Cheated!", "Principal Fired", "Teacher duty roaster", "PROM Cancelled", "School Cafeteriea Inspection Slip", "Ms. Lee enter principal's office", "Cafeteria Doesn't Serve Expired Meet", "eighth"];
+
+function allowDrop(event) {
+    event.preventDefault(); // Allow the drop
+}
+
+function drag(event) {
+    const imgElement = event.target.querySelector('img'); 
+    if (imgElement) {
+        event.dataTransfer.setData("text/plain", event.target.id); // Use ID to track element
+    }
+}
+
+function drop(event) {
+    event.preventDefault();
+    if (dropOrder < orderedWords.length) {
+        event.target.textContent = orderedWords[dropOrder]; // Display the ordered word
+        event.target.style.backgroundColor = '#235460';
+        
+        const draggedElementId = event.dataTransfer.getData("text/plain");
+        const draggedElement = document.getElementById(draggedElementId);
+        if (draggedElement) {
+            draggedElement.remove(); // Remove the dragged item from the sidebar
+        }
+        
+        dropOrder++; // Increment the drop order
+    }
+}
+
+// Attach event listeners to draggable items
+document.querySelectorAll('.inventory-item').forEach(item => {
+    item.addEventListener('dragstart', drag);
+});
+
+// Attach event listeners to drop areas
+document.querySelectorAll('.drag-box').forEach(box => {
+    box.addEventListener('dragover', allowDrop);
+    box.addEventListener('drop', drop);
+});
+
+document.getElementById('checkButton').addEventListener('click', function() {
+    // Update the main container's background to 'narrator.png'
+    const mainContainer = document.getElementById('mainContainer');
+    mainContainer.style.backgroundImage = "url('frame4/narrator.png')";
+
+    // Reset the sidebar inventory to its original items
+    const statusBar = document.querySelector('.status-bar .inventory-grid');
+    statusBar.innerHTML = `
+        <div class="inventory-item" id="invent1" draggable="true">
+            <img src="frame3/back1.png" alt="Notebook" class="inventory-image">
+            <div class="inventory-title">Notebook</div>
+        </div>
+        <div class="inventory-item" id="invent2" draggable="true">
+            <img src="frame3/back2.png" alt="Letter" class="inventory-image">
+            <div class="inventory-title">Letter</div>
+        </div>
+        <div class="inventory-item" id="invent3" draggable="true">
+            <img src="frame3/back3.png" alt="Key" class="inventory-image">
+            <div class="inventory-title">Key</div>
+        </div>
+    `;
+
+    // Re-attach event listeners for drag-and-drop
+    document.querySelectorAll('.inventory-item').forEach(item => {
+        item.addEventListener('dragstart', drag);
+    });
+
+    document.querySelectorAll('.drag-box').forEach(box => {
+        box.addEventListener('dragover', allowDrop);
+        box.addEventListener('drop', drop);
+    });
+
+    // Update title content
+    const titleContent = document.getElementById('titleContent');
+    titleContent.innerHTML = `
+        <p style="font-size: 28px;">Rumor High School</p>
+        <p style="font-size: 18px; font-family: 'Montserrat', sans-serif;">Puzzle 2: The Locker of Anonymous Letters</p>
+    `;
+});
+
+
+    document.getElementById('checkButton').addEventListener('click', function() {
+    // Update the main container's background to 'narrator.png'
+    const mainContainer = document.getElementById('mainContainer');
+    mainContainer.style.display = 'none';
+    
+    const narratorDiv = document.querySelector('.narrator');
+    narratorDiv.style.display = 'flex'; // Show the narrator div
+
+    // Reset the sidebar inventory to its original items
+    const statusBar = document.querySelector('.status-bar .inventory');
+    statusBar.innerHTML = `
+        <div class="inventory-header">
+            <h2 style="color: #FFFFFF; font-family: 'Caprasimo', cursive; font-size: 24px; margin: 0;">Inventory</h2>
+            <button class="show-all-button">Show All →</button>
+        </div>
+        <div class="inventory">
+            <div class="inventory-item" id="invent1" draggable="true">
+                <img src="frame3/back1.png" alt="Notebook" class="inventory-image">
+                <div class="inventory-title">Notebook</div>
+            </div>
+            <div class="inventory-item" id="invent2" draggable="true">
+                <img src="frame3/back2.png" alt="Letter" class="inventory-image">
+                <div class="inventory-title">Letter</div>
+            </div>
+            <div class="inventory-item" id="invent3" draggable="true">
+                <img src="frame3/back3.png" alt="Key" class="inventory-image">
+                <div class="inventory-title">Key</div>
+            </div>
+        </div>
+    `;
+
+    // Re-attach event listeners for drag-and-drop
+    document.querySelectorAll('.inventory-item').forEach(item => {
+        item.addEventListener('dragstart', drag);
+    });
+
+    document.querySelectorAll('.drag-box').forEach(box => {
+        box.addEventListener('dragover', allowDrop);
+        box.addEventListener('drop', drop);
+    });
+
+    // Update title content
+    const titleContent = document.getElementById('titleContent');
+    titleContent.innerHTML = `
+        <p style="margin-left:255px; font-size: 28px;">Rumor High School</p>
+        <p style="margin-left:255px; font-size: 18px; font-family: 'Montserrat', sans-serif;">Puzzle 2: The Locker of Anonymous Letters</p>
+    `;
+});
+
+document.querySelector('.narrator').addEventListener('click', function() {
+    window.location.href = 'puzzle3.html'; // Redirect to puzzle3.html
+});
+
+</script>
+</body>
+</html>

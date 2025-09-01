@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home page</title>
+    <link href="https://fonts.googleapis.com/css2?family=Caprasimo&family=Montserrat:wght@600&display=swap" rel="stylesheet"> <!-- Importing fonts -->
+
+    <style>
+        body {
+            margin: 0;
+            display: flex; 
+            flex-direction: column;
+            justify-content: flex-start; 
+            align-items: center; 
+            background-color: #0C1D22; /* Background color for scrollable area */
+            overflow-x: hidden; /* Prevent horizontal overflow */
+        }
+
+        .welcome {
+            background-image: url('frame1/background.png');
+            background-size: cover;
+            background-position: center;
+            height: 100vh; /* Full viewport height */
+            width: 100%; /* Set to 100% of the viewport width */
+            display: flex; /* Center content */
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        header {
+            background-color: rgba(225, 225, 225, 0.4);
+            width: calc(100% - 40px); 
+            max-width: 1560px; 
+            height: 70px;
+            border-radius: 12px;
+            margin: 20px 20px 0 20px;
+            display: flex; 
+            justify-content: space-between;
+            align-items: center; 
+            padding: 7px 50px; 
+            box-sizing: border-box; 
+            opacity: 1; 
+            position: fixed; /* Fix the header at the top */
+            top: 0; /* Aligns header to the top */
+            z-index: 10; /* Ensures header appears above the content */
+        }
+
+        .logo {
+            font-size: 35px; 
+            font-family: 'Caprasimo', cursive; 
+            color: #FFFFFF;
+            letter-spacing: -0.04em; 
+            height: 40px; 
+            width: 102px; 
+            display: flex; 
+            align-items: center; 
+        }
+
+        nav ul {
+            list-style: none; 
+            margin: 0; 
+            padding: 0; 
+            display: flex; 
+            gap: 40px; 
+        }
+
+        nav li {
+            height: 21px; 
+        }
+
+        nav a {
+            font-family: 'Montserrat', sans-serif; 
+            font-weight: 600; 
+            font-size: 17px; 
+            letter-spacing: -0.04em; 
+            text-transform: uppercase; 
+            color: #FFFFFF; 
+            text-decoration: none; 
+            display: flex; 
+            align-items: center; 
+            height: 100%; 
+        }
+
+        nav a:hover {
+            text-decoration: underline; 
+        }
+
+        .welcome-section {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            margin-top: 0; /* Remove margin for full height */
+        }
+
+        .welcome-text {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 400;
+            font-size: 30px; 
+            letter-spacing: -0.04em; 
+            color: #FFFFFF; 
+            margin: 0; 
+            height: 37px; 
+        }
+
+        .title {
+            font-family: 'Caprasimo', cursive;
+            font-weight: 400; 
+            font-size: 140px; 
+            letter-spacing: -0.04em; 
+            color: #FFFFFF; 
+            line-height: 100%; 
+            margin: 0;
+            height: auto; 
+        }
+        
+        .description {
+            width: 467px;
+            height: 72px;
+            font-family: 'Montserrat', sans-serif; 
+            font-weight: 400; 
+            font-size: 20px; 
+            line-height: 100%; 
+            letter-spacing: -0.04em; 
+            color: #FFFFFF; 
+            text-align: center; 
+            margin-top: 25px; 
+            text-transform: uppercase; 
+        }
+        
+        .play-button {
+            width: 227px; /* Fixed width */
+            height: 60px; /* Fixed height */
+            background-color: #628C9B; /* Button color */
+            color: #FFFFFF; /* Text color */
+            font-family: 'Montserrat', sans-serif; 
+            font-weight: 400; /* Regular weight */
+            font-size: 20px; /* Font size */
+            border: none; /* Remove default border */
+            border-radius: 16px; /* Rounded corners */
+            padding: 16px 30px; /* Padding */
+            cursor: pointer; /* Pointer cursor */
+            display: flex; /* Flex layout for centering */
+            align-items: center; /* Center vertically */
+            justify-content: center; /* Center horizontally */
+            margin-top: 20px; /* Space above the button */
+            transition: background-color 0.3s; /* Smooth transition for hover effect */
+        }
+
+        .play-button:hover {
+            background-color: #4f6f7f; /* Darker shade on hover */
+        }
+
+        .quest-section {
+            width: 1128px; /* Fixed width */
+            margin: 50px auto; /* Centered with margin */
+            color: #FFFFFF; /* Text color */
+            text-align: left; /* Align text to the left */
+        }
+
+        .quest-title {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 300; /* Lighter font weight */
+            font-size: 17px; /* Adjust as needed */
+            line-height: 1.2; /* Adjust line height for spacing */
+            letter-spacing: 0.5px; /* Slightly increased letter spacing */
+            text-transform: uppercase; /* Keeps the text in uppercase */
+            color: rgba(255, 255, 255, 0.7); /* Softer white */
+            text-align: left; /* Align text as required */
+            opacity: 0.7;
+        }
+
+        .quest-options {
+            display: flex;
+            margin-top: 40px; /* Space above the quest options */
+            gap: 20px;
+        }
+
+        .rumor-card {
+            width: 552px; /* Fixed width for Rumor High School */
+            height: 264px; /* Fixed height */
+            background-image: url('frame1/frame-unlock.png'); /* Background image */
+            background-size: cover; /* Cover the card */
+            border-radius: 20px; /* Rounded corners */
+            color: #FFFFFF;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            text-align: center;
+        }
+
+        .rumor-card:hover {
+            background-color: rgba(78, 120, 142, 0.6); /* Darker shade on hover */
+        }
+
+        .enchanted-card, .airplane-card {
+            width: 264px; /* Fixed width for other quests */
+            height: 264px; /* Fixed height */
+            border-radius: 20px; /* Rounded corners */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #FFFFFF;
+            cursor: pointer;
+            background-size: cover; /* Cover the card */
+            transition: background-color 0.3s;
+            text-align: center;
+        }
+
+        .enchanted-card {
+            background-image: url('frame1/frame-lock-1.png'); /* Background image for Enchanted Library */
+        }
+
+        .airplane-card {
+            background-image: url('frame1/frame-lock-2.png'); /* Background image for Airplane Conspiracy */
+        }
+
+        .enchanted-card:hover, .airplane-card:hover {
+            background-color: rgba(78, 120, 142, 0.6); /* Darker shade on hover */
+        }
+
+        .quest-text {
+            font-family: 'Caprasimo', cursive;
+            font-weight: 400;
+            font-size: 20px; 
+            line-height: 100%; 
+            letter-spacing: -3%; 
+            text-align: center; /* Center align the text */
+            margin-top: 27px; /* Margin above the text */
+        }
+
+        .quest-text-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center; /* Center text under each card */
+        }
+
+        .why-play-section {
+            width: 1128px; /* Fixed width */
+            margin: 50px auto; /* Centered */
+            color: #FFFFFF; /* Text color */
+        }
+
+        .why-play-card {
+            display: flex; /* Flex display for image and text alignment */
+            align-items: flex-start; /* Align items at the top */
+            gap: 80px; /* Space between image and text */
+            margin-bottom: 45px; /* Spacing between each frame */
+        }
+
+        .why-play-image {
+            width: 552px;  /* Set to the required width */
+            height: 330px; /* Fixed height */
+            border-radius: 8px; /* Rounded corners */
+            background-size: cover; /* Ensure background image covers the box */
+        }
+
+        .why-play-text-container {
+            width: 459px; /* Set the required width */
+            height: 330px; /* Set the required height */
+            display: flex; 
+            flex-direction: column; /* Stack title and description vertically */
+            justify-content: flex-start; /* Start alignment from the top */
+            text-align: left; /* Align text to the left */
+            padding: 16px; /* Add some padding */
+        }
+        
+        .why-play-combined-text {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 400;
+            font-size: 17px; /* Set to 17px */
+            line-height: 1; /* 100% */
+            letter-spacing: -0.04em; /* Corresponds to -4% */
+            color: #FFFFFF; /* Text color */
+        }
+
+        .why-play-title {
+            font-family: 'Caprasimo', cursive;
+            font-weight: 400;
+            font-style: normal; 
+            font-size: 24px;
+            line-height: 100%;
+            letter-spacing: -0.03em; 
+            text-align: center;
+        }
+
+        .why-play-description {
+            margin-top: 15px; /* or other spacing as needed */
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 400;
+            font-size: 17px; 
+            line-height: 1; /* 100% */
+            letter-spacing: -0.04em; 
+            color: #FFFFFF; /* Text color */
+            opacity: 0.7;
+        }
+        .margin-bottom-40 {
+            margin-bottom: 1px; /* Margin of 40px */
+        }
+        .quest-text-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center; /* Center text under each card */
+        }
+
+        .rumor-card,
+        .enchanted-card,
+        .airplane-card {
+            transition: transform 0.3s ease; /* Smooth transition on hover */
+        }
+
+        .quest-text-container:hover .rumor-card,
+        .quest-text-container:hover .enchanted-card,
+        .quest-text-container:hover .airplane-card {
+            transform: scale(1.05); /* Slightly enlarge the card */
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3); /* Optional shadow for depth */
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <div class="logo">verity</div>
+        <nav>
+            <ul>
+                <li><a href="#">about</a></li>
+                <li><a href="#">contacts</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <div class="welcome">
+        <div class="welcome-section">
+            <div class="welcome-text">WELCOME TO</div>
+            <div class="title">verity</div>
+            <div class="description">A virtual escape room to practice your critical thinking and learn to distinguish misinformation tactics</div>
+            <a href="onboarding.html" class="play-button" style="text-decoration: none;">
+                Play Now
+            </a>
+        </div>
+    </div>
+
+<div class="quest-section">
+    <div class="quest-title">Choose Your Today's Quest</div>
+    <div class="quest-options">
+        <div class="quest-text-container">
+            <a href="onboarding.html">
+                <div class="rumor-card"></div>
+            </a>
+            <div class="quest-text">Rumor High School</div>
+        </div>
+
+        <div class="quest-text-container">
+                <div class="enchanted-card"></div>
+            </a>
+            <div class="quest-text">Enchanted Library</div>
+        </div>
+
+        <div class="quest-text-container">
+                <div class="airplane-card"></div>
+            </a>
+            <div class="quest-text">Airplane Conspiracy</div>
+        </div>
+    </div>
+</div>
+
+<div class="why-play-section">
+    <div class="why-play-card">
+        <div class="why-play-image" style="background-image: url('frame1/why-play-1.png');"></div>
+        <div class="why-play-text-container">
+            <p class="why-play-combined-text">
+                <strong class="why-play-title">
+                    Awareness of Misinformation Tactics
+                </strong>
+            </p>
+            <div class="why-play-description">
+                Players learn to recognize how misinformation spreads — from fake news and deepfakes to misleading statistics and gossip. By experiencing these tactics in a suspenseful, game-like setting, they become more alert to the same tricks in real life.
+            </div>
+        </div>
+    </div>
+
+    <div class="why-play-card">
+        <div class="why-play-text-container" style="text-align: left;">
+            <p class="why-play-combined-text">
+                <strong class="why-play-title">
+                    Critical Thinking & Source Evaluation
+                </strong>
+            </p>
+            <div class="why-play-description">
+                Every clue in Verity forces players to ask: Is this reliable? Who benefits if I believe this? The puzzles are designed to sharpen critical reasoning and fact-checking skills—essential tools for navigating today's digital world.
+            </div>
+        </div>
+        <div class="why-play-image" style="background-image: url('frame1/why-play-2.png');"></div>
+    </div>
+
+    <div class="why-play-card">
+        <div class="why-play-image" style="background-image: url('frame1/why-play-3.png');"></div>
+        <div class="why-play-text-container">
+            <p class="why-play-combined-text">
+                <strong class="why-play-title">
+                    Teamwork & Negotiation Skills
+                </strong>
+            </p>
+            <div class="why-play-description">
+                Because one player is secretly the “Disinformation Agent,” the rest must collaborate, debate, and negotiate under pressure. This strengthens communication, teamwork, and decision-making—while also making the gameplay social and exciting.
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="background-container" style="width: 1128px; height: 652px; position: relative; border-radius: 20px; overflow: hidden;">
+    <div style="width: 100%; height: 100%; 
+                background-image: url('frame1/background-2.png'); 
+                background-size: cover; 
+                background-position: center; 
+                filter: blur(6px); /* Apply blur effect here */
+                position: absolute; 
+                top: 0; left: 0;">
+    </div>
+    
+    <div style="position: relative; 
+                z-index: 1; /* Ensure content is above the blurred background */
+                padding-top: 100px; 
+                padding-bottom: 60px; 
+                display: flex; 
+                flex-direction: column; 
+                align-items: center; 
+                gap: 35px; 
+                margin-bottom: 60px;
+                opacity: 1;">
+        
+        <h2 class="game-title" style="font-family: 'Caprasimo', cursive; font-weight: 700; font-size: 36px; color: #FFFFFF; text-align: center;">RUMOR HIGH SCHOOL</h2>
+        <p class="game-description" style="font-family: 'Montserrat', sans-serif; font-weight: 400; font-size: 17px; line-height: 1.5; color: #FFFFFF; text-align: center; opacity: 0.8;">
+            Locked inside Rumor High after dark, players must navigate eerie classrooms and shadowy hallways buzzing with gossip, half-truths, and lies. To escape, they must uncover the original source of the rumors—before misinformation and mistrust tear the group apart.
+        </p>
+        <a href="onboarding.html" class="play-button" style="text-decoration: none;">Play Now</a>
+        </div>
+</div>
+
+
+<div style="width: 100vw; /* Full viewport width */
+            margin-top: 120px; /* Space above */
+            height: 737px; 
+            padding-top: 70px;
+            background-color: #0A3E49; 
+            opacity: 1; 
+            position: relative; 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            gap: 10px;">
+    
+    <h2 style="font-family: 'Caprasimo', cursive; font-weight: 700; font-size: 36px; color: #FFFFFF; text-align: center;">Send us a Message</h2>
+    <p style="font-family: 'Montserrat', sans-serif; font-weight: 400; font-size: 17px; color: #FFFFFF; text-align: center; opacity: 0.8;">We are happy to hear your suggestions or opportunities</p>
+    
+    <input type="text" placeholder="Email address" style="padding: 10px; width: 552px; margin-bottom: 10px; border-radius: 8px; border: none;">
+    <input type="text" placeholder="Name Surname" style="padding: 10px; width: 552px; margin-bottom: 10px; border-radius: 8px; border: none;">
+    <input type="text" placeholder="Message" style="padding: 10px; width: 552px; margin-bottom: 20px; border-radius: 8px; border: none; height: 120px;">
+        
+    <button onclick="clearInputs(); location.reload();" style="width: 572px; height: 50px; background-color: #628C9B; color: #FFFFFF; font-family: 'Montserrat', sans-serif; font-weight: 400; font-size: 20px; border: none; border-radius: 16px; cursor: pointer;">Send!</button></div>
+</div>
+
+
+<div style="width: 100%; 
+            height: 200px;
+            padding: 40px 0; 
+            text-align: left; 
+            margin-left: 150px;
+            color: #FFFFFF;">
+    
+    <div style="font-family: 'Caprasimo', cursive; 
+                font-weight: 400; 
+                font-size: 35px; 
+                letter-spacing: -0.03em; 
+                opacity: 1;">
+       <p> </p> verity <span style="font-family: 'Montserrat', sans-serif; 
+                font-weight: 400; 
+                font-size: 17px; 
+                letter-spacing: -0.04em; 
+                margin: 10px 0;">   © 2025 — Copyright </span>
+    
+    </div>
+    
+    <div style="font-family: 'Montserrat', sans-serif; 
+                font-weight: 400; 
+                font-size: 17px; 
+                letter-spacing: -0.04em; 
+                margin: 10px 0;">
+        Created for UNICEF Youth Hackathon 2025
+    </div>
+</div>
+
+</body>
+</html>
+
+
+<script>
+function clearInputs() {
+    document.querySelector('input[placeholder="Email address"]').value = '';
+    document.querySelector('input[placeholder="Name Surname"]').value = '';
+    document.querySelector('input[placeholder="Message"]').value = '';
+}
+</script>

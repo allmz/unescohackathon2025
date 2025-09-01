@@ -1,0 +1,1054 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Puzzle 1</title>
+    <link href="https://fonts.googleapis.com/css2?family=Caprasimo&family=Montserrat:wght@600&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            margin: 0;
+            display: flex; 
+            flex-direction: column;
+            justify-content: flex-start; 
+            align-items: center; 
+            background-color: #0C1D22;
+            overflow-x: hidden; 
+        }
+
+        header {
+            background-color: rgba(225, 225, 225, 0.4);
+            width: calc(100% - 40px); 
+            max-width: 1560px; 
+            height: 70px;
+            border-radius: 12px;
+            margin: 20px 20px 0 20px;
+            display: flex; 
+            justify-content: space-between;
+            align-items: center; 
+            padding: 7px 50px; 
+            box-sizing: border-box; 
+            position: fixed; 
+            top: 0; 
+            z-index: 10; 
+        }
+
+        .logo {
+            font-size: 35px; 
+            font-family: 'Caprasimo', cursive; 
+            color: #FFFFFF;
+            letter-spacing: -0.04em; 
+            height: 40px; 
+            width: 102px; 
+            display: flex; 
+            align-items: center; 
+        }
+
+        .status-bar {
+            width: 480px;
+            height: 752px;
+            position: fixed;
+            top: 110px;
+            right: 180px; 
+            background-color: #0A3E49; 
+            border-radius: 12px;
+            padding: 24px;
+            opacity: 1;
+            display: flex; 
+            flex-direction: column; 
+            gap: 30px; 
+        }
+
+        .player-status-header, .inventory-header {
+            display: flex;
+            justify-content: space-between; 
+            align-items: center; 
+            margin-bottom: 10px; 
+        }
+
+        .player-status {
+            display: flex;
+            flex-direction: column;
+            gap: 20px; 
+        }
+
+        .player {
+            display: flex;
+            align-items: center; 
+            background-color: #04282F; 
+            border-radius: 8px;
+            padding: 10px; 
+        }
+
+        .player-icon {
+            width: 40px;
+            height: 40px;
+            margin-right: 10px; 
+            border-radius: 50%; 
+        }
+
+        .player-name {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 600;
+            font-size: 17px;
+            line-height: 100%;
+            letter-spacing: -3%;
+            color: #FFFFFF; 
+        }
+
+        .you-status {
+            background-color: #64A66F;
+            width: 37px;
+            height: 21px;
+            display: flex;
+            align-items: center;
+            justify-content: center; 
+            border-radius: 8px;
+            padding: 3px 8px; 
+            color: #FFFFFF; 
+            margin-left: 10px; 
+        }
+
+        .active-status {
+            background-color: #0A3E49;
+            width: 50px;
+            height: 21px;
+            display: flex;
+            align-items: center;
+            justify-content: center; 
+            border-radius: 8px;
+            padding: 3px 8px; 
+            color: #FFFFFF; 
+            margin-left: 10px; 
+        }
+
+        .show-all-button {
+            background-color: #0A3E49; 
+            color: #ffffff; 
+            border: 1px solid #78959B; 
+            border-radius: 8px; 
+            padding: 3px 6px; 
+            font-family: 'Montserrat', sans-serif;
+            font-size: 14px; 
+            cursor: pointer; 
+            margin-left: 10px; 
+            display: inline-block; 
+            line-height: 1;  
+            height: 27px;
+            border-color: #78959B;
+            opacity: 0.5;
+        }
+
+        .inventory {
+            display: flex;
+            justify-content: space-between; 
+            gap: 20px; 
+            width: 100%; 
+        }
+
+        .inventory-item {
+            position: relative; 
+            border: 2px solid transparent; 
+            border-radius: 20px; 
+            overflow: hidden; 
+            flex: 1; 
+            max-width: 132.67px; 
+        }
+
+        .inventory-image {
+            width: 100%; 
+            height: 95px; 
+            border-radius: 20px; 
+            transition: all 0.2s ease; 
+        }
+
+        .inventory-title {
+            position: absolute;
+            top: 50%; 
+            left: 50%; 
+            transform: translate(-50%, -50%); 
+            text-align: center;
+            color: white; 
+            background-color: rgba(0, 0, 0, 0.5); 
+            padding: 6px 0; 
+            border-radius: 8px; 
+            width: auto; 
+        }
+
+        .inventory-item:hover {
+            border-color: #78959B; 
+        }
+
+        .inventory-item:hover .inventory-image {
+            opacity: 0.8; 
+        }
+
+        /* Chat styles */
+        .chat {
+            background-color: #FFFFFF33; 
+            border-radius: 12px; 
+            padding: 15px; 
+            height: 200px; 
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start; 
+        }
+
+        .chat-input-container {
+            display: flex; 
+            align-items: center; 
+            width: 100%; 
+            margin-top: auto; 
+        }
+
+        input[type="text"] {
+            flex: 1; 
+            padding: 10px; 
+            border-radius: 8px; 
+            border: 1px solid #78959B; 
+            height: 30px; /* Adjusted to maintain height */
+            margin-right: 10px; 
+            background-color: #FFFFFF73;
+        }
+
+        button.send-button {
+            background-color: #628C9B; 
+            color: #FFFFFF; 
+            border: none; 
+            border-radius: 8px; 
+            padding: 0 20px; 
+            height: 30px; 
+            cursor: pointer; 
+        }
+
+        .chat-messages {
+            flex: 1; 
+            overflow-y: auto; 
+            margin-bottom: 10px; 
+            max-height: 60px; 
+        }
+
+        .chat-message {
+            display: flex; 
+            align-items: center; 
+            color: #FFFFFF; 
+            margin: 5px 0; 
+        }
+
+        .sender-image {
+            width: 20px; 
+            height: 20px; 
+            border-radius: 50%; 
+            margin-right: 10px; 
+        }
+
+        .sender-name {
+            color: #88B7C7; 
+            margin-right: 5px; 
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 600;
+            font-size: 17px;
+            line-height: 140%; 
+            letter-spacing: -3%; 
+        }
+
+        .message-text {
+            font-family: 'Montserrat', sans-serif; 
+            font-weight: 600; 
+            font-size: 17px; 
+            line-height: 140%; 
+            letter-spacing: -3%; 
+            color: #FFFFFF; 
+        }
+
+        .main-container {
+            width: 768px; /* Width of the main container */
+            height: 630px; /* Height of the main container */
+            position: absolute; /* Absolute positioning */
+            top: 240px; /* Spacing from the top below the header */
+            left: 270px; /* Positioned to the left */
+            background-image: url(frame3/narrator1.png); 
+            background-size: cover; /* Make sure the image covers */
+            background-position: center; /* Center the image */
+            border-radius: 20px; /* Rounded corners */
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2); /* Shadow for depth */
+            display: flex; /* Flexbox for layout */
+            flex-direction: column; /* Column layout */
+            padding: 20px; /* Padding inside container */
+            gap: 10px; /* Space between elements */
+            opacity: 1; /* Full opacity */
+        }
+
+        .hidden-wall {
+            width: 768px; /* Width of the hidden wall */
+            height: 630px; /* Height of the hidden wall */
+            position: absolute; /* Absolute positioning */
+            top: 240px; /* Adjust according to your layout */
+            left: 270px; /* Adjust according to your layout */
+            background-image: url('frame3/hidden-wall.png'); 
+            background-size: cover; 
+            background-position: center; 
+            border-radius: 20px; 
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2); 
+            display: none; /* Initially hidden */
+            flex-direction: column; 
+            padding: 20px; 
+            gap: 10px; 
+            opacity: 1; 
+        }
+
+        .top-overlay {
+            width: 244px;
+            height: 191px;
+            position: absolute; /* Absolute positioning */
+            top: 250px; /* Positioning according to your requirement */
+            left: 275px; /* Positioning according to your requirement */
+            background-color: rgba(15, 27, 61, 0.4); /* Hex color with opacity */
+            backdrop-filter: blur(6px); /* Background blur */
+            border-radius: 12px; /* Optional rounded corners */
+            display: flex; /* Flex for centering content */
+            align-items: center; 
+            justify-content: center; 
+            color: #FFFFFF; /* Text color */
+            /* top: 250px; */
+        }
+
+        .title-content {
+            padding: 20px; /* Add padding for spacing */
+            margin-top: 80px; /* Add margin below to create space before the main container */
+            border-radius: 12px; 
+            margin-right: 925px;
+            color: #FFFFFF;
+            font-family: 'Caprasimo';
+        }
+        .lupa {
+            width: 59.443397521972656;
+            height: 59.267601013183594;
+            top: 302px;
+            left: 354px;
+            opacity: 1;
+            border-radius: 60px;
+            padding: 30px;
+            background-image: url(frame3/lupa.png);
+        }
+
+        .full-wall {
+            width: 768px; /* Width of the full wall */
+            height: 630px; /* Height of the full wall */
+            position: absolute; /* Absolute positioning */
+            top: 240px; /* Adjust according to your layout */
+            left: 270px; /* Adjust according to your layout */
+            background-image: url('frame3/full-wall.png'); 
+            background-size: cover; 
+            background-position: center; 
+            border-radius: 20px; 
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2); 
+            display: none; /* Initially hidden */
+            flex-direction: column; 
+            padding: 20px; 
+            gap: 10px; 
+            opacity: 1; 
+        }
+
+        .lens {
+            width: 40px;
+            height: 40px;
+            gap: 10px;
+            opacity: 1;
+            border-radius: 60px;
+            background-image: url(frame3/lens.png);
+            border-radius: 50%;
+            background-size: cover;
+        }
+        .lens-1{
+            position: absolute;
+            margin-top: 570px;
+            margin-left: 120px;
+
+        }
+
+        .lens-2{
+            position: absolute;
+            margin-top: 570px;
+            margin-left: 530px;
+        }
+        
+        .lens-3{
+            position: absolute;
+            margin-top: 420px;
+            margin-left: 700px;
+        }
+
+        .task-button{
+            position: absolute;
+            background-color: #628C9B;
+            opacity: 0.7;
+            color: #ffffff;
+            border: none;
+            border-radius: 16px;
+            padding: 12px 20px;
+            font-family: 'Caprasimo', cursive;
+            cursor: pointer;
+            margin-left: 20px;
+            width: 94px;
+            height: 43px;
+            top: 590px;
+            left: 650px;
+        }
+
+        .overlay-div {
+            position: absolute;
+            width: 100%; /* Cover the entire full-wall */
+            height: 100%;
+            top: 0;
+            left: 0;
+            display: none; /* Hidden by default */
+            z-index: 20; /* Bring it to the front */
+        }
+
+        .blur-background {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(40, 40, 40, 0.9); /* Semi-transparent dark background */
+            filter: blur(2px); /* Apply blur effect */
+            z-index: 1; /* Behind the image */
+        }
+
+        .image-container {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%); /* Center the image */
+            z-index: 2; /* Bring the image in front of the blurred background */
+        }
+
+        .overlay-image {
+            width: auto; /* Allow image to retain its ratio */
+            height: auto; /* Allow image to retain its ratio */
+            max-width: 100%; /* Responsive pinch */
+            max-height: 100%; /* Responsive pinch */
+        }
+        .puzzle-1 {
+            display: flex;
+            background-color: #0A3E49;
+            width: 768px; /* Width of the full wall */
+            height: 630px; /* Height of the full wall */
+            position: absolute; /* Absolute positioning */
+            top: 240px; /* Adjust according to your layout */
+            left: 270px; /* Adjust according to your layout */
+            background-size: cover; 
+            background-position: center; 
+            border-radius: 20px; 
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2); 
+            flex-direction: column; /* Ensure children stack vertically */
+            padding: 20px; 
+            gap: 10px; 
+            opacity: 1; 
+        }
+        .key-word-container {
+            display: flex; /* Use flexbox for the container */
+            flex-wrap: wrap; /* Allow wrapping if needed */
+            justify-content: flex-start; /* Align them to the left */
+        }
+
+        .key-word {
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            width: 90px; 
+            height: 30px; 
+            opacity: 1;
+            gap: 10px;
+            border-radius: 16px;
+            padding: 12px 20px;
+            font-family: 'Caprasimo', sans-serif; 
+            font-weight: 400;
+            font-style: normal; 
+            font-size: 16px;
+            line-height: 100%;
+            letter-spacing: -4%;
+            background-color: #235460;
+            color: #96BEC7;
+            margin-right: 15px; 
+        }
+        .puzzle-content {
+            width: 300px; /* Allow it to take the full width of its parent */
+            height: 492px;
+            opacity: 1;
+            margin-top: 15px; /* Add space above the puzzle content for separation */
+            display: flex; /* Use flexbox to align children (if needed) */
+            flex-direction: column; /* Stack children vertically */
+            align-items: flex-start; /* Align children to the left */
+            color: #88B7C7;
+
+            
+        }
+        .puzzle-content {
+            display: flex; /* Use flexbox to align children */
+            flex-direction: column; /* Stack children vertically */
+            align-items: flex-start; /* Align children to the left */
+        }
+        .puzzle-content > p {
+            font-family: Montserrat;
+            font-weight: 500;
+            font-style: Medium;
+            font-size: 18px;
+            line-height: 140%;
+            letter-spacing: -3%;
+            vertical-align: middle;
+
+        }
+
+        .check-box {
+            width: 178px; /* Set box width */
+            height: 80px; /* Adjusted height for better usability */
+            background-color: #FFF; /* Light background for visibility */
+            border: 2px dashed #235460; /* Dashed border for visual distinction */
+            border-radius: 10px; /* Round the corners */
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            color: #235460; /* Text color */
+            font-family: 'Caprasimo', sans-serif; 
+            background-color: #0A3E49;
+            color: #FFFFFF;
+
+        }
+
+        .check-box-container {
+            display: flex; /* Use flexbox to layout the checkboxes */
+            align-items: center; /* Center the items vertically */
+            gap: 40px; /* Ensures a 40px gap between the checkboxes (optional, if you want to keep the CSS cleaner) */
+            background-color: #0A3E49;
+        }
+
+        .buttons {
+            margin-top: 100px;
+            display: flex;
+            gap:570px;
+        }
+        .truth {
+            width: 768px; /* Width of the full wall */
+            height: 630px; /* Height of the full wall */
+            position: absolute; /* Absolute positioning */
+            top: 240px; /* Adjust according to your layout */
+            left: 270px; /* Adjust according to your layout */
+            background-image: url('frame3/truth.png'); 
+            background-size: cover; 
+            background-position: center; 
+            border-radius: 20px; 
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2); 
+            display: none; /* Initially hidden */
+            flex-direction: column; 
+            padding: 20px; 
+            gap: 10px; 
+            opacity: 1; 
+
+        }
+
+        .result-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8); /* Semi-transparent background */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 100; /* Make sure it's above other content */
+            display: none; /* Initially hidden */
+        }
+
+        .result-image {
+            max-width: 80%; /* Responsive image size */
+            border-radius: 12px;
+        }
+        
+
+</style>
+
+</head>
+
+<body>
+    <header>
+        <div class="logo">verity</div>
+        <nav>
+            <ul>
+                <button id="nextButton" style="background-color: #628C9B; opacity: 0.7; color: #ffffff; border: none; border-radius: 16px; padding: 12px 20px; font-family: 'Caprasimo', cursive; cursor: pointer; margin-left: 20px;">Cancel</button>
+            </ul>
+        </nav>
+    </header>
+
+    <div class="status-bar">
+        <div class="player-status-header">
+            <h2 style="color: #FFFFFF; font-family: 'Caprasimo', cursive; font-size: 24px; margin: 0;">Player Status</h2>
+            <button class="show-all-button">Show All →</button>
+        </div>
+
+        <div class="player-status">
+            <div class="player">
+                <img src="frame3/kid.png" alt="Invisible Kid" class="player-icon">
+                <div class="player-name">Invisible Kid</div>
+                <div class="you-status">You</div>
+            </div>
+            <div class="player">
+                <img src="frame3/kid.png" alt="Gossip Queen" class="player-icon">
+                <div class="player-name">Gossip Queen</div>
+                <div class="active-status">Active</div>
+            </div>
+            <div class="player">
+                <img src="frame3/kid.png" alt="Gossip Queen" class="player-icon">
+                <div class="player-name">Gossip Queen</div>
+                <div class="active-status">Active</div>
+            </div>
+        </div>
+
+        <div class="inventory-header">
+            <h2 style="color: #FFFFFF; font-family: 'Caprasimo', cursive; font-size: 24px; margin: 0;">Inventory</h2>
+            <button class="show-all-button">Show All →</button>
+        </div>
+
+        <div class="inventory">
+            <div class="inventory-item" id="invent1" draggable="true">
+                <img src="frame3/back1.png" alt="Notebook" class="inventory-image">
+                <div class="inventory-title">Notebook</div>
+            </div>
+            <div class="inventory-item" id="invent2" draggable="true">
+                <img src="frame3/back2.png" alt="Letter" class="inventory-image">
+                <div class="inventory-title">Letter</div>
+            </div>
+            <div class="inventory-item" id="invent3" draggable="true">
+                <img src="frame3/back3.png" alt="Key" class="inventory-image">
+                <div class="inventory-title">Key</div>
+            </div>
+        </div>
+
+
+        <!-- Chat Section -->
+        <h2 style="color: #FFFFFF; font-family: 'Caprasimo', cursive; font-size: 24px; margin: 0;">Chat</h2>
+
+        <div class="chat">
+            <div class="chat-messages" id="chatMessages">
+                <!-- Messages will be displayed here -->
+            </div>
+            <div class="chat-input-container">
+                <input type="text" id="chatInput" placeholder="Message">
+                <button class="send-button" id="sendButton">Send</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="title-content" id="titleContent">
+        <p style="font-size: 28px;"> Rumor High School</p>
+        <p style="font-size: 18px; font-family: 'Montserrat', sans-serif;">Puzzle 1: The Graffiti Wall — Rumor Sleuthing </p>
+    </div>
+
+    <div class="main-container" id="mainContainer">
+        <!-- Initial content. This will change on click -->
+    </div>
+
+    <div class="hidden-wall" id="hiddenWall">
+        <div class="top-overlay">
+            <div class="lupa">
+
+            </div>
+        </div>
+    </div>
+
+    <div class="full-wall" id="fullWall">
+        <div class="lens lens-3"></div>
+        <div class="lens lens-2"></div>
+        <div class="lens lens-1"></div>
+        <button class="task-button">Task →</button>
+        <div class="overlay-div" id="overlayDiv">
+            <div class="blur-background"></div>
+            <div class="image-container">
+                <img src="frame3/arrested-principal.png" alt="Image" class="overlay-image">
+            </div>
+        </div>
+    </div>
+
+
+<div class="puzzle-1" id="puzzle1" style="display: none;">
+    <p style="font-family: Montserrat; font-weight: 400; font-style: normal; font-size: 18px; line-height: 100%; letter-spacing: -4%; color: #ffffff;">
+        Drag into the designated box.
+    </p>
+
+    <div class="key-word-container" style="margin-left: 25px;">
+        <div class="key-word" id="currency" draggable="true">Currency</div>
+        <div class="key-word" id="relevancy" draggable="true">Relevancy</div>
+        <div class="key-word" id="authority" draggable="true">Authority</div>
+        <div class="key-word" id="accuracy" draggable="true">Accuracy</div>
+        <div class="key-word" id="purpose" draggable="true">Purpose</div>
+    </div>
+
+    <div class="puzzle-content">
+        <p style="color: #ffffff"><strong>1.</strong></p>
+        <p style="margin-top: -20px;">The Principal was arrested last night</p>
+
+        <p style="margin-top: 30px; color: #ffffff"><strong>2.</strong></p>
+        <p style="margin-top: -20px;">Prom is canceled — rats took over the gym.</p>
+
+        <p style="margin-top: 30px; color: #ffffff"> <strong>3.</strong></p>
+        <p style="margin-top: -20px;">Coach Daniels was fired for cheating in tournaments.</p>
+    </div>
+
+    <div class="check-box-container" style="margin-top: -480px; margin-left: 350px;">
+<div class="check-box" id="ev1" ondragover="allowDrop(event)" ondrop="drop(event, 'currency')">Evidence</div>
+<div class="check-box" id="which1" ondragover="allowDrop(event)" ondrop="drop(event, 'currency')">Which CRAAP</div>
+    </div>
+
+    <div class="check-box-container" style="margin-top: 40px; margin-left: 350px;">
+<div class="check-box" id="ev2" ondragover="allowDrop(event)" ondrop="drop(event, 'relevancy')">Evidence</div>
+<div class="check-box" id="which2" ondragover="allowDrop(event)" ondrop="drop(event, 'relevancy')">Which CRAAP</div>    </div>
+
+    <div class="check-box-container" style="margin-top: 40px; margin-left: 350px;">
+<div class="check-box" id="ev3" ondragover="allowDrop(event)" ondrop="drop(event, 'authority')">Evidence</div>
+<div class="check-box" id="which3" ondragover="allowDrop(event)" ondrop="drop(event, 'authority')">Which CRAAP</div>    </div>
+
+    <div class="buttons">
+        <button class="undrag-button" id="undragAll" style="background-color: #628C9B; opacity: 0.7; color: #ffffff; border: none; border-radius: 16px; padding: 12px ; font-family: 'Caprasimo', cursive; cursor: pointer;">Undrag All</button>
+        <button class="check-button" id="checkButton" style=" background-color: #628C9B; opacity: 0.7; color: #ffffff; border: none; border-radius: 16px; padding: 12px ; font-family: 'Caprasimo', cursive; cursor: pointer;">Check →</button>
+    </div>
+
+</div>
+
+<div class="truth"></div>
+
+<div class="result-overlay" id="resultOverlay">
+    <img src="frame3/result.png" alt="Result" class="result-image">
+</div>
+
+
+    <script>
+const chatInput = document.getElementById('chatInput');
+const sendButton = document.getElementById('sendButton');
+const chatMessages = document.getElementById('chatMessages');
+
+const lens1 = document.querySelector('.lens-1');
+const lens2 = document.querySelector('.lens-2');
+const lens3 = document.querySelector('.lens-3');
+
+const overlayDiv = document.getElementById('overlayDiv');
+const overlayImage = document.querySelector('.overlay-image');
+
+// Functionality for lens-1
+lens1.addEventListener('click', function() {
+    overlayDiv.style.display = 'block'; 
+    overlayImage.src = 'frame3/arrested-principal.png'; // Set overlay image for lens-1
+
+    // Add a click event just for this overlay instance
+    overlayDiv.onclick = function() {
+        overlayDiv.style.display = 'none'; // Hide overlay
+        lens1.remove(); // Remove lens-1 from the DOM
+        
+        // Update inventory item for lens-1
+        const inventoryItem1 = document.querySelector('.inventory-item img[src="frame3/back1.png"]');
+        const inventoryTitle1 = document.querySelector('.inventory-item .inventory-title');
+        if (inventoryItem1 && inventoryTitle1) {
+            inventoryItem1.src = 'frame3/arrested-mini.png'; // Update image source
+            inventoryTitle1.textContent = 'Arrested Principal'; // Update title
+        }
+        // Clean up event listener to avoid stacking
+        overlayDiv.onclick = null; 
+    };
+});
+
+// Functionality for lens-2
+lens2.addEventListener('click', function() {
+    overlayDiv.style.display = 'block'; 
+    overlayImage.src = 'frame3/rat-gym.png'; // Set overlay image for lens-2
+
+    // Add a click event just for this overlay instance
+    overlayDiv.onclick = function() {
+        overlayDiv.style.display = 'none'; // Hide overlay
+        lens2.remove(); // Remove lens-2 from the DOM
+
+        // Update inventory item for lens-2
+        const inventoryItem2 = document.querySelector('.inventory-item img[src="frame3/back2.png"]');
+        const inventoryTitle2 = inventoryItem2.nextElementSibling; // Get the sibling title element
+        
+        if (inventoryItem2 && inventoryTitle2) {
+            inventoryItem2.src = 'frame3/rat-gym-mini.png'; // Update image source
+            inventoryTitle2.textContent = 'LOLnews'; // Update title
+        }
+        
+        // Clean up event listener to avoid stacking
+        overlayDiv.onclick = null; 
+    };
+});
+
+// Functionality for lens-3
+lens3.addEventListener('click', function() {
+    overlayDiv.style.display = 'block'; 
+    overlayImage.src = 'frame3/coach.png'; // Set overlay image for lens-3
+
+    // Add a click event just for this overlay instance
+    overlayDiv.onclick = function() {
+        overlayDiv.style.display = 'none'; // Hide overlay
+        lens3.remove(); // Remove lens-3 from the DOM
+        
+        // Update inventory item for lens-3
+        const inventoryItem3 = document.querySelector('.inventory-item img[src="frame3/back3.png"]');
+        const inventoryTitle3 = inventoryItem3.nextElementSibling; // Get the sibling title element
+        
+        if (inventoryItem3 && inventoryTitle3) {
+            inventoryItem3.src = 'frame3/coach-mini.png'; // Update image source
+            inventoryTitle3.textContent = 'Coach'; // Update title
+        }
+        
+        // Clean up event listener to avoid stacking
+        overlayDiv.onclick = null; 
+    };
+});
+
+// Function to send chat message
+function sendMessage() {
+    const messageText = chatInput.value.trim(); 
+    if (messageText) {
+        const messageElement = document.createElement('div'); 
+        messageElement.className = 'chat-message'; 
+        
+        const senderImage = document.createElement('img');
+        senderImage.src = 'frame3/back1.png'; 
+        senderImage.className = 'sender-image'; 
+
+        const senderName = document.createElement('span');
+        senderName.className = 'sender-name'; 
+        senderName.textContent = "Gossip Queen"; 
+
+        const messageBody = document.createElement('span');
+        messageBody.className = 'message-text'; 
+        messageBody.textContent = messageText; 
+
+        messageElement.appendChild(senderImage);
+        messageElement.appendChild(senderName);
+        messageElement.appendChild(messageBody);
+
+        chatMessages.appendChild(messageElement); 
+        chatInput.value = ''; 
+        chatMessages.scrollTop = chatMessages.scrollHeight; 
+    }
+}
+
+sendButton.addEventListener('click', sendMessage);
+
+chatInput.addEventListener('keypress', function(event) {
+    if (event.key === 'Enter') {
+        sendMessage(); 
+    }
+});
+
+const mainContainer = document.getElementById('mainContainer');
+const hiddenWall = document.getElementById('hiddenWall');
+const fullWall = document.getElementById('fullWall');
+
+let clickCount = 0;
+
+function changeBackgroundImage() {
+    clickCount += 1; 
+    
+    if (clickCount === 1) {
+        mainContainer.style.backgroundImage = "url('frame3/narrator2.png')";
+    } else if (clickCount === 2) {
+        mainContainer.style.display = "none"; 
+        hiddenWall.style.display = "flex"; 
+    }
+}
+
+mainContainer.addEventListener('click', changeBackgroundImage);
+
+// Update for lupa click functionality
+const lupa = document.querySelector('.lupa');
+lupa.addEventListener('click', function() {
+    hiddenWall.style.display = "none"; // Hide the hidden wall
+    fullWall.style.display = "flex"; // Show the full wall
+});
+
+const taskButton = document.querySelector('.task-button');
+const puzzle1 = document.getElementById('puzzle1');
+
+taskButton.addEventListener('click', function() {
+    // Hide the full-wall
+    fullWall.style.display = "none"; 
+
+    // Show the puzzle-1 div
+    puzzle1.style.display = "block"; 
+});
+
+
+const titleContent = document.getElementById('titleContent');
+
+taskButton.addEventListener('click', function() {
+    // Hide full-wall
+    fullWall.style.display = "none"; 
+
+    // Show the puzzle-1 div
+    puzzle1.style.display = "block"; 
+
+    // Update title content
+    titleContent.innerHTML = `
+        <p style="margin-left:255px; font-size: 28px;">Puzzle 1: The Graffiti Wall — Rumor Sleuthing</p>
+        <p style="margin-left:255px; font-size: 17px; font-family: 'Montserrat', sans-serif;">
+            Drag the suitable items from your inventory into the Evidence boxes. Identify which part of CRAAP test did the statement fail.
+        </p>
+    `;
+});
+
+
+    function allowDrop(event) {
+        event.preventDefault();
+    }
+
+    function drag(event) {
+        event.dataTransfer.setData("text", event.target.id);
+    }
+
+    function drop(event) {
+        event.preventDefault();
+        const data = event.dataTransfer.getData("text");
+        const draggedElement = document.getElementById(data);
+
+        if (draggedElement) {
+            event.target.textContent = draggedElement.textContent;
+            event.target.style.backgroundColor = '#235460';
+            draggedElement.style.display = 'none';
+            draggedElement.draggable = false;
+        }
+    }
+
+    // Add dragstart event listeners to inventory items
+    document.querySelectorAll('.inventory-item').forEach(item => {
+        item.addEventListener('dragstart', drag);
+    });
+
+    // Function to add dragstart event listeners to keywords
+    function attachKeywordDragListeners() {
+        document.querySelectorAll('.key-word').forEach(keyword => {
+            keyword.addEventListener('dragstart', drag);
+        });
+    }
+
+    // Call function to attach listeners initially
+    attachKeywordDragListeners();
+
+    // Variables to reference Puzzle div
+    const puzzle1Div = document.getElementById('puzzle1');
+    const keyWordContainer = document.querySelector('.key-word-container'); 
+
+    // Function to save the current state of the inventory items
+    function saveCurrentState() {
+        const currentState = [];
+        const inventoryItems = document.querySelectorAll('.inventory-item');
+        
+        inventoryItems.forEach(item => {
+            const itemId = item.id;
+            const itemVisible = item.style.display !== 'none';
+            currentState.push({ id: itemId, visible: itemVisible });
+        });
+
+        return currentState;
+    }
+
+    // Function to reload the puzzle-1 div based on saved state
+    function reloadPuzzle() {
+        puzzle1Div.style.display = 'none';
+
+        const inventoryItems = document.querySelectorAll('.inventory-item');
+        inventoryItems.forEach(item => {
+            item.style.display = 'flex';
+            item.draggable = true;
+        });
+
+        document.querySelectorAll('.check-box').forEach(box => {
+            box.textContent = "Evidence";
+            box.style.backgroundColor = '#0A3E49';
+        });
+
+        keyWordContainer.innerHTML = '';
+
+        const keyWordsData = [
+            { id: 'currency', text: 'Currency' },
+            { id: 'relevancy', text: 'Relevancy' },
+            { id: 'authority', text: 'Authority' },
+            { id: 'accuracy', text: 'Accuracy' },
+            { id: 'purpose', text: 'Purpose' }
+        ];
+
+        keyWordsData.forEach(data => {
+            const keyWord = document.createElement('div');
+            keyWord.className = 'key-word';
+            keyWord.id = data.id;
+            keyWord.draggable = true;
+            keyWord.textContent = data.text;
+            keyWordContainer.appendChild(keyWord);
+        });
+
+        // Reattach the drag event listeners
+        attachKeywordDragListeners();
+
+        puzzle1Div.style.display = 'block';
+    }
+
+    // Listen for the "Undrag All" button to save current state and reload
+    document.getElementById('undragAll').addEventListener('click', function() {
+        const state = saveCurrentState();
+        reloadPuzzle();
+    });
+
+    function isPlacementCorrect() {
+    const ev1 = document.getElementById('ev1').textContent.trim();
+    const ev2 = document.getElementById('ev2').textContent.trim();
+    const ev3 = document.getElementById('ev3').textContent.trim();
+
+    const which1 = document.getElementById('which1').textContent.trim();
+    const which2 = document.getElementById('which2').textContent.trim();
+    const which3 = document.getElementById('which3').textContent.trim();
+
+    return ev1 === 'Arrested Principal' && ev2 === 'LOLnews' && ev3 === 'Coach' &&
+            which1 === 'Currency' && which2 === 'Authority' && which3 === 'Accuracy';
+}
+
+// Add an event listener to the "Check" button
+document.getElementById('checkButton').addEventListener('click', function() {
+    if (isPlacementCorrect()) {
+        // Correct placements, show the truth div
+        document.getElementById('puzzle1').style.display = 'none'; // Corrected the way puzzle1 is selected
+        document.querySelector('.truth').style.display = 'block';
+
+        const titleContent = document.getElementById('titleContent');
+        titleContent.innerHTML = `
+            <p style="font-size: 28px;">Rumor High School</p>
+            <p style="font-size: 18px; font-family: 'Montserrat', sans-serif;">Puzzle 1: The Graffiti Wall — Rumor Sleuthing </p>
+        `;
+    } else {
+        // Incorrect placements, show the result overlay
+        document.getElementById('resultOverlay').style.display = 'flex';
+    }
+});
+
+document.querySelector('.truth').addEventListener('click', function() {
+    this.style.backgroundImage = "url('frame3/narrator3.png')";
+});
+
+
+let narrator3Displayed = false;
+
+// Adding a click event listener to the "truth" div
+document.querySelector('.truth').addEventListener('click', function() {
+    if (!narrator3Displayed) {
+        // Change the background image on the first click
+        this.style.backgroundImage = "url('frame3/narrator3.png')";
+        narrator3Displayed = true;  // Update flag once background is set
+    } else {
+        // Redirect to puzzle2.html on the second click
+        window.location.href = 'puzzle2.html';
+    }
+});
+
+</script>
+</body>
+</html>

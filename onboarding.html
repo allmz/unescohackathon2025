@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Boarding</title>
+    <link href="https://fonts.googleapis.com/css2?family=Caprasimo&family=Montserrat:wght@600&display=swap" rel="stylesheet"> 
+
+    <style>
+        body {
+            margin: 0;
+            display: flex; 
+            flex-direction: column;
+            justify-content: flex-start; 
+            align-items: center; 
+            background-color: #0C1D22;
+            overflow-x: hidden; 
+        }
+
+        header {
+            background-color: rgba(225, 225, 225, 0.4);
+            width: calc(100% - 40px); 
+            max-width: 1560px; 
+            height: 70px;
+            border-radius: 12px;
+            margin: 20px 20px 0 20px;
+            display: flex; 
+            justify-content: space-between;
+            align-items: center; 
+            padding: 7px 50px; 
+            box-sizing: border-box; 
+            position: fixed; 
+            top: 0; 
+            z-index: 10; 
+        }
+
+        .logo {
+            font-size: 35px; 
+            font-family: 'Caprasimo', cursive; 
+            color: #FFFFFF;
+            letter-spacing: -0.04em; 
+            height: 40px; 
+            width: 102px; 
+            display: flex; 
+            align-items: center; 
+        }
+
+        nav ul {
+            list-style: none; 
+            margin: 0; 
+            padding: 0; 
+            display: flex; 
+            gap: 40px; 
+        }
+
+        nav li {
+            height: 21px; 
+        }
+
+        nav a {
+            font-family: 'Montserrat', sans-serif; 
+            font-weight: 600; 
+            font-size: 17px; 
+            letter-spacing: -0.04em; 
+            text-transform: uppercase; 
+            color: #FFFFFF; 
+            text-decoration: none; 
+            display: flex; 
+            align-items: center; 
+            height: 100%; 
+        }
+
+        nav a:hover {
+            text-decoration: underline; 
+        }
+
+        .choose-avatar, .setup-escape-room, .welcome-section, .craap {
+            height: 590px;
+            width: 930px;
+            gap: 50px;
+            margin-top: 130px; 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+        }
+
+        .avatar-container {
+            display: grid; 
+            grid-template-columns: repeat(3, 1fr);
+            gap: 40px; 
+            margin-top: 20px; 
+        }
+
+        .avatar {
+            width: 200px; 
+            height: 200px; 
+            position: relative;
+            border-radius: 8px; 
+            overflow: hidden; 
+            transition: all 0.3s ease; 
+        }
+
+        .avatar:hover {
+            cursor: pointer; 
+        }
+
+        .avatar.active {
+            width: 220px; 
+            height: 220px; 
+            z-index: 1; 
+        }
+
+        .avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .avatar-label {
+            position: absolute;
+            top: 150px; 
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: rgba(8, 53, 69, 0.7);
+            color: #FFFFFF;
+            border-radius: 8px;
+            padding: 6px 20px;
+            text-align: center;
+            width: 150px; 
+            font-family: 'Caprasimo', cursive;
+            font-size: 15px;
+        }
+
+        .button-container {
+            display: flex;
+            justify-content: center;
+            gap: 435px; 
+            margin-top: 20px;     
+        }
+
+        .button-container button {
+            background-color: rgba(98, 204, 203, 0.7);
+            color: #FFFFFF;
+            border: none;
+            border-radius: 16px;
+            padding: 12px 20px;
+            font-family: 'Caprasimo', cursive;
+            cursor: pointer;
+            width: 110px; 
+            height: 45px;
+        }
+
+        .setup-option {
+            display: flex;
+            align-items: center;
+            gap: 10px; 
+            margin-top: 20px;
+        }
+
+        .setup-button {
+            background-color: #628C9B47;
+            border-radius: 16px;
+            color: white;
+            font-family: 'Caprasimo', cursive; 
+            font-weight: 600; 
+            font-size: 25px; 
+            padding: 12px 20px;
+            height: 52px; 
+            cursor: pointer;
+            opacity: 1; 
+            display: flex;
+            flex-direction: column; /* Stack items vertically */
+            align-items: center; /* Center items horizontally */
+            justify-content: center; /* Center items vertically */
+        }
+
+        .timer-container {
+            display: flex;
+            gap: 20px; /* Space between the buttons */
+        }
+
+        .timer-label {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 12px; /* Set size for the label */
+            color: white; /* Color for the label */
+        }
+        
+        .video-container {
+            width: 680px; 
+            height: 428px; 
+            border-radius: 20px; 
+            overflow: hidden; 
+            margin: 0 auto; 
+            background: #000; 
+        }
+
+        .craap img {
+            width: 660px; /* Match the iframe width */
+            height: 428px; /* Match the iframe height */
+        }
+
+    </style>
+</head>
+
+<body>
+    <header>
+        <div class="logo">verity</div>
+        <nav>
+            <ul>
+                <li><a href="#">about</a></li>
+                <li><a href="#">contacts</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <div class="choose-avatar">
+        <h1 style="font-family: 'Caprasimo', cursive; font-size: 40px; color: #FFFFFF; text-align: center; letter-spacing: -0.04em; margin: 0;">Choose Your Avatar</h1>
+        <p style="font-family: 'Montserrat', sans-serif; font-size: 18px; color: #FFFFFF; text-align: center; letter-spacing: -0.04em; margin: -20px 0;">Everyone except the misinformant has the same role and abilities</p>
+        
+        <div class="avatar-container">
+            <div class="avatar">
+                <img src="frame2/gossip-queen.png" alt="Gossip Queen">
+                <div class="avatar-label">Gossip Queen</div>
+            </div>
+            <div class="avatar">
+                <img src="frame2/class-clown.png" alt="Class Clown">
+                <div class="avatar-label">Class Clown</div>
+            </div>
+            <div class="avatar">
+                <img src="frame2/overachiever.png" alt="Overachiever">
+                <div class="avatar-label">Overachiever</div>
+            </div>
+            <div class="avatar">
+                <img src="frame2/invisible-kid.png" alt="Invisible Kid">
+                <div class="avatar-label">Invisible Kid</div>
+            </div>
+            <div class="avatar">
+                <img src="frame2/principals-shadow.png" alt="Principal's Shadow">
+                <div class="avatar-label">Principal's Shadow</div>
+            </div>
+            <div class="avatar">
+                <img src="frame2/janitor.png" alt="Janitor">
+                <div class="avatar-label">Janitor</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="setup-escape-room" style="display: none;">
+        <h1 style="font-family: 'Caprasimo', cursive; font-size: 40px; color: #FFFFFF; text-align: center; letter-spacing: -0.04em; margin: 0;">Set Up Your Escape Room</h1>
+        <p style="font-family: 'Montserrat', sans-serif; font-size: 18px; color: #FFFFFF; text-align: center; margin: -20px 0;">customise your experience to get the best out of it!</p>
+        
+        <div class="setup-option">
+            <span style="color: #FFFFFF; font-family: 'Montserrat', sans-serif; font-size: 18px;">Number of Players</span>
+            <button class="setup-button player-button">3</button>
+            <button class="setup-button player-button">4</button>
+            <button class="setup-button player-button">5</button>
+            <button class="setup-button player-button">6</button>
+        </div>
+        
+        <div class="setup-option">
+            <span style="color: #FFFFFF; font-family: 'Montserrat', sans-serif; font-size: 18px;">Timer</span>
+            <div class="timer-container">
+                <button class="setup-button timer-button" style="background-color: #628C9B47;">
+                    <div style="font-weight: bold; font-size: 17px;">60</div>
+                    <div class="timer-label" style="font-size: 12px;">min</div>
+                </button>
+                <button class="setup-button timer-button" style="background-color: #628C9B47;">
+                    <div style="font-weight: bold; font-size: 17px;">50</div>
+                    <div class="timer-label" style="font-size: 12px;">min</div>
+                </button>
+                <button class="setup-button timer-button" style="background-color: #628C9B47;">
+                    <div style="font-weight: bold; font-size: 17px;">40</div>
+                    <div class="timer-label" style="font-size: 12px;">min</div>
+                </button>
+                <button class="setup-button timer-button" style="background-color: #628C9B47;">
+                    <div style="font-weight: bold; font-size: 17px;">No</div>
+                    <div class="timer-label" style="font-size: 12px;">Timer</div>
+                </button>
+            </div>
+        </div>
+
+        <div class="setup-option">
+            <span style="color: #FFFFFF; font-family: 'Montserrat', sans-serif; font-size: 18px;">Hints</span>
+            <button class="setup-button hint-button">No</button>
+            <button class="setup-button hint-button">Yes</button>
+        </div>
+    </div>
+
+    <div class="welcome-section" style="display: none;">
+        <h1 style="font-family: 'Caprasimo', cursive; font-size: 40px; color: #FFFFFF; text-align: center; letter-spacing: -0.04em; margin-bottom: 10px;">Welcome to the Rumor High School</h1>
+        <p style="font-family: 'Montserrat', sans-serif; font-size: 18px; color: #FFFFFF; text-align: center; margin: -20px 0;">Understand the Backstory</p>
+
+        <div class="video-container">
+            <video id="video" width="660" height="438" controls>
+                <source src="frame2/onboarding.mp4" type="video/mp4">
+                Your browser does not support the video tag.
+            </video>
+        </div>
+    </div>
+    
+    <div class="craap" style="display: none;">
+        <h1 style="font-family: 'Caprasimo', cursive; font-size: 40px; color: #FFFFFF; text-align: center; letter-spacing: -0.04em; margin-bottom: 10px;">CRAAP Test: Your Detective Toolkit</h1>
+        <p style="font-family: 'Montserrat', sans-serif; font-size: 18px; color: #FFFFFF; text-align: center; margin: -20px 0;">Use this method to detect misinformation</p>
+        <div>
+            <img src="frame2/craap.png" alt="Craaap image">
+        </div>
+    </div>
+
+    <div class="button-container">
+        <button id="backButton" style="background-color: #628C9B47; opacity: 0.7; color: #ffffff; border: none; border-radius: 16px; padding: 12px 20px; font-family: 'Caprasimo', cursive; cursor: pointer;" onclick="history.back();">← Back</button>
+        <button id="nextButton" style="background-color: #628C9B; opacity: 0.7; color: #ffffff; border: none; border-radius: 16px; padding: 12px 20px; font-family: 'Caprasimo', cursive; cursor: pointer; margin-left: 20px;">Next →</button>
+    </div>
+
+    <script>
+        const avatars = document.querySelectorAll('.avatar');
+        const nextButton = document.getElementById('nextButton');
+        const backButton = document.getElementById('backButton');
+        const chooseAvatarDiv = document.querySelector('.choose-avatar');
+        const setupEscapeRoomDiv = document.querySelector('.setup-escape-room');
+        const welcomeSectionDiv = document.querySelector('.welcome-section');
+        const craapDiv = document.querySelector('.craap');
+        const video = document.getElementById('video');
+
+        // Handle avatar selection
+        avatars.forEach(avatar => {
+            avatar.addEventListener('click', () => {
+                avatars.forEach(av => av.classList.remove('active'));
+                avatar.classList.add('active');
+            });
+        });
+
+        // Handle next button functionality
+        nextButton.addEventListener('click', () => {
+            if (chooseAvatarDiv.style.display !== 'none' && setupEscapeRoomDiv.style.display === 'none') {
+                chooseAvatarDiv.style.display = 'none';
+                setupEscapeRoomDiv.style.display = 'flex'; // Show the setup section
+            } else if (setupEscapeRoomDiv.style.display !== 'none') {
+                setupEscapeRoomDiv.style.display = 'none';
+                welcomeSectionDiv.style.display = 'flex'; // Show the welcome section
+            } else if (welcomeSectionDiv.style.display !== 'none') {
+                video.pause(); // Pause the video
+                welcomeSectionDiv.style.display = 'none';
+                craapDiv.style.display = 'flex'; // Show the CRAAP section
+            }
+             else if (craapDiv.style.display !== 'none') {
+                window.location.href = 'game.html'; // Redirect to game.html
+            }
+
+        });
+
+        // Handle back button functionality
+        backButton.addEventListener('click', () => {
+            if (chooseAvatarDiv.style.display === 'flex') {
+                window.location.href = 'index.html'; // Redirect to index.html if on the avatar selection page
+            } else if (setupEscapeRoomDiv.style.display !== 'none') {
+                setupEscapeRoomDiv.style.display = 'none';
+                chooseAvatarDiv.style.display = 'flex'; // Show the avatar selection again
+            } else if (welcomeSectionDiv.style.display !== 'none') {
+                welcomeSectionDiv.style.display = 'none'; 
+                setupEscapeRoomDiv.style.display = 'flex'; // Show the setup section back
+            } else if (craapDiv.style.display !== 'none') {
+                craapDiv.style.display = 'none'; 
+                welcomeSectionDiv.style.display = 'flex'; 
+            }
+        });
+
+        // Number of Players Selection
+        const playerButtons = document.querySelectorAll('.player-button');
+        playerButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                playerButtons.forEach(btn => {
+                    btn.style.backgroundColor = '#628C9B47'; // Reset color
+                });
+                button.style.backgroundColor = '#628C9B'; // Change clicked button color
+            });
+        });
+
+        // Timer Selection
+        const timerButtons = document.querySelectorAll('.timer-button');
+        timerButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                const buttonContainer = button.closest('.timer-container');
+                const buttonsInRow = buttonContainer.querySelectorAll('.timer-button');
+                buttonsInRow.forEach(btn => {
+                    btn.style.backgroundColor = '#628C9B47'; // Reset color
+                });
+                button.style.backgroundColor = '#628C9B'; // Change clicked button color
+            });
+        });
+
+        // Hints Selection
+        const hintButtons = document.querySelectorAll('.hint-button');
+        hintButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                hintButtons.forEach(btn => {
+                    btn.style.backgroundColor = '#628C9B47'; // Reset color
+                });
+                button.style.backgroundColor = '#628C9B'; // Change clicked button color
+            });
+        });
+
+        
+
+
+
+</script>
+</body>
+</html>
